@@ -9,6 +9,6 @@ export const adminOnly = TryCatch(async (req, res, next) => {
     if (!user)
         return next(new ErrorHandler("Saale galat id deta hai", 401));
     if (user.role !== "admin")
-        return next(new ErrorHandler("You are not admin", 401));
+        return next(new ErrorHandler("You are not admin", 403));
     next();
 });

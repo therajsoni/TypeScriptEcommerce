@@ -8,9 +8,13 @@ export const errorMiddleware = (
   next: NextFunction
 ) => {
   err.statusCode ||= 500;
+  err.message ||= "Internal Server Error";
+  if (err.name === "CastError") err.message = "Invalid id"; //
+  if (err.statusCode === 11000)
+    err.message = "Duplicate key says mongoose unique item dulpicate";
   return res.status(err.statusCode).json({
     success: false,
-    message: err.message || "Internal Server Error",
+    message: err.message,
   });
 };
 export const TryCatch =

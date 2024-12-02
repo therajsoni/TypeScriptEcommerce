@@ -1,45 +1,39 @@
 import mongoose from "mongoose";
-import validator from "validator";
-interface IUser extends Document {
-  _id: string;
+interface IProduct extends Document {
   name: string;
+  stock: number;
   photo: string;
-  email: string;
-  role: "admin" | "user";
-  gender: "male" | "female";
-  dob: Date;
-  createdAt: Date;
-  updatedAt: Date;
-  age: number;
+  category: string;
+  price: number;
 }
 
-const schema = new mongoose.Schema(
+const schema = new mongoose.Schema<IProduct>(
   {
     name: {
-        type: String,
-        required: [true, "Please enter Name"],
-      },
-      photo: {
-        type: String,
-        required: [true, "Please enter Photo"],
-      },
-    price : {
+      type: String,
+      required: [true, "Please enter Name"],
+    },
+    photo: {
+      type: String,
+      required: [true, "Please enter Photo"],
+    },
+    price: {
       type: Number,
       required: [true, "Please enter Price"],
     },
     stock: {
       type: Number,
       required: [true, "Please enter Stock"],
-      },
+    },
     category: {
       type: String,
       required: [true, "Please enter Product category"],
-      trim : true,
-    }
+      trim: true,
+    },
   },
   {
     timestamps: true,
   }
 );
 
-export const Product = mongoose.model<IUser>("Product", schema);
+export const Product = mongoose.model<IProduct>("Product", schema);
