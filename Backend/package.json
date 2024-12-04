@@ -19,6 +19,7 @@
     "mongoose": "^8.8.3",
     "morgan": "^1.10.0",
     "node-cache": "^5.1.2",
+    "stripe": "^17.4.0",
     "uuid": "^11.0.3",
     "validator": "^13.12.0"
   },

@@ -1,6 +1,6 @@
 import { myCache } from "../app.js";
 import { Product } from "../models/product.js";
-export const invalidateCache = async ({ product, order, admin, userId, orderId, productId, }) => {
+export const invalidateCache = ({ product, order, admin, userId, orderId, productId, }) => {
     if (product) {
         const productKeys = [
             "latest-products",
@@ -32,6 +32,12 @@ export const invalidateCache = async ({ product, order, admin, userId, orderId, 
         myCache.del(ordersKeys);
     }
     if (admin) {
+        myCache.del([
+            "admin-stats",
+            "admin-pie-charts",
+            "admin-bar-charts",
+            "admin-line-charts",
+        ]);
     }
 };
 export const reduceStock = async (orderItems) => {
@@ -60,4 +66,19 @@ export const getInventories = async ({ categories, ProductsCount, }) => {
         });
     });
     return categoryCount;
+};
+export const getChartsData = ({ length, docArr, today, property, }) => {
+    const data = new Array(length).fill(0);
+    docArr.forEach((i) => {
+        const creationDate = i.createdAt;
+        const monthDiff = (today.getMonth() - creationDate.getMonth() + 12) % 12;
+        if (monthDiff < length) {
+            if (property)
+                data[length - monthDiff - 1] += i[property];
+        }
+        else {
+            data[length - monthDiff - 1] += 1;
+        }
+    });
+    return data;
 };

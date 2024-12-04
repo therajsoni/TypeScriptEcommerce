@@ -31,7 +31,6 @@ const schema = new mongoose.Schema<IProduct>(
       required: [true, "Please enter Product category"],
       trim: true,
     },
-    createdAt: new Date(),
   },
   {
     timestamps: true,

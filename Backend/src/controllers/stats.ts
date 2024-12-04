@@ -137,16 +137,16 @@ export const getDashboardStats = TryCatch(async (req, res, next) => {
       product: ProductsCount,
       order: allOrders.length,
     };
-    const orderMonthyCounts = new Array(6).fill(0);
-    const orderMonthyRevenue = new Array(6).fill(0);
-
-    lastSixMonthOrders.forEach((order) => {
-      const creationDate = order.createdAt;
-      const monthDiff = (today.getMonth() - creationDate.getMonth() + 12) % 12;
-      if (monthDiff < 6) {
-        orderMonthyCounts[6 - monthDiff - 1] += 1;
-        orderMonthyRevenue[6 - monthDiff - 1] += order.total;
-      }
+    const orderMonthyCounts = getChartsData({
+      length: 6,
+      today,
+      docArr: lastSixMonthOrders,
+    });
+    const orderMonthyRevenue = getChartsData({
+      length: 6,
+      today,
+      docArr: lastSixMonthOrders,
+      property: "total",
     });
 
     const categoryCount: Record<string, number>[] = await getInventories({
@@ -337,7 +337,7 @@ export const getBarCharts = TryCatch(async (req, res, next) => {
   });
 });
 export const getLineCharts = TryCatch(async (req, res, next) => {
-  const key = "admin-bar-charts";
+  const key = "admin-line-charts";
   let charts = undefined;
   if (myCache.has(key)) charts = JSON.parse(myCache.get(key)!);
   else {
