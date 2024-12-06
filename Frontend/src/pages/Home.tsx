@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import ProductCard from "../components/product-card";
 import { useLatestProductsQuery } from "../redux/api/productAPI";
 import toast from "react-hot-toast";
+import { Skeleton } from "../components/Loader";
 
 function Home() {
   const { data, isLoading, isError } = useLatestProductsQuery("");
