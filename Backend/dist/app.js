@@ -9,6 +9,7 @@ import orderRoute from "./routes/order.js";
 import morgan from "morgan";
 import CouponRoute from "./routes/payment.js";
 import dashBoardRoute from "./routes/stats.js";
+import cors from "cors";
 // dotenv.config({
 //   path: "./.env",
 // });
@@ -21,6 +22,10 @@ ConnectedDB(mongoURI);
 const app = express();
 app.use(express.json());
 app.use(morgan("dev"));
+app.use(cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
+}));
 export const stripe = new Stripe(stripe_key);
 export const myCache = new NodeCache();
 // Using Routes

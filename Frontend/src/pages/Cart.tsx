@@ -38,7 +38,7 @@ function Cart() {
     <div className="cart">
       <main>
         {cartItem.length > 0 ? (
-          cartItem?.map((i, idx) => <CartItem cartItem={i} />)
+          cartItem?.map((i, idx) => <CartItem key={idx} cartItem={i} />)
         ) : (
           <h1>No Items Added</h1>
         )}

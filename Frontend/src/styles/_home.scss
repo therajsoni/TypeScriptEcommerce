@@ -8,8 +8,10 @@
     width: 100%;
     height: 18.75rem;
     margin: auto;
-    background-image: url("https://m.media-amazon.com/images/I/71LA-cqXmlL._AC_UF894,1000_QL80_FMwebp_.jpg")
-      no-repeat center / cover;
+    background-image: url("data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAFoAhwMBIgACEQEDEQH/xAAYAAEBAQEBAAAAAAAAAAAAAAABAAIDB//EABsQAQEBAAIDAAAAAAAAAAAAAAABEQIxIUFh/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAH/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwDx+cr1G5eV9sRqXBXST61PjnK1oOkrU5OWmUHTQxvk6o1KdYlWg3o1nQDWijVaAZrVZqDFKtQjEagkagphgw4oSygJ0IFp0IDqZWg1o0IEqkgzfJVQjMagkWA0tBxRJIElUCQUApBFKBBAoQaliUEaYjUQMIxTtQ9qxdIAisBnEUCBQJFIAoqM4igc4ZWI1EGjBCKUiqIFChFAEiICkgkkokNQOErUYbiDUajPFqCmEFUSSvQIggMIhBJD0CoNAM1JA//Z");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
   }
   > h1 {
     @include heading(1px);
