@@ -4,6 +4,11 @@ import { Link } from "react-router-dom";
 import { Column } from "react-table";
 import AdminSidebar from "../../components/admin/AdminSidebar";
 import TableHOC from "../../components/admin/TableHOC";
+import { useAllProductsQuery } from "../../redux/api/productAPI";
+import { server } from "../../redux/store";
+import toast from "react-hot-toast";
+import { CustomError } from "../../types/api-types";
+import { useSelector } from "react-redux";
 
 interface DataType {
   photo: ReactElement;
@@ -60,7 +65,25 @@ const arr: Array<DataType> = [
 ];
 
 const Products = () => {
+  const { isLoading, isError, error, data } = useAllProductsQuery("");
+
   const [rows, setRows] = useState<DataType[]>(arr);
+
+  if (isError) {
+    const err = error as CustomError;
+    toast.error(err.data.message);
+  }
+
+  if (data)
+    setRows(
+      data?.products?.map((i) => ({
+        photo: <img src={`${server}/${i.photo}`} alt="photo" />,
+        name: i.name,
+        price: i.price,
+        stock: i.stock,
+        action: <Link to={`/admin/product/${i._id}`}>Manage</Link>,
+      }))
+    );
 
   const Table = TableHOC<DataType>(
     columns,
