@@ -4,7 +4,7 @@ function Loader() {
 
 export default Loader;
 
-export const Skeleton = () => {
+export const Skeleton = ({ width = "unset" }: { width?: string }) => {
   return (
     <div className="skeleton-loader">
       <div className="skeleton-shape"></div>

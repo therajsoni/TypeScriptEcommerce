@@ -22,7 +22,7 @@ function Home() {
       </h1>
       <main>
         {isLoading ? (
-          <Skeleton />
+          <Skeleton width="80vw" />
         ) : (
           data?.products?.map((i, index) => (
             <ProductCard
