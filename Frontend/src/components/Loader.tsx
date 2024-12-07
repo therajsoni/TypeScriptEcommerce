@@ -4,12 +4,14 @@ function Loader() {
 
 export default Loader;
 
-export const Skeleton = ({ width = "unset" }: { width?: string }) => {
-  return (
-    <div className="skeleton-loader">
-      <div className="skeleton-shape"></div>
-      <div className="skeleton-shape"></div>
-      <div className="skeleton-shape"></div>
-    </div>
-  );
+interface SkeletonProps {
+  width?: string;
+  length?: number;
+}
+
+export const Skeleton = ({ width = "unset", length = 3 }: SkeletonProps) => {
+  const skeletons = Array.from({ length }, (_, idx) => (
+    <div key={idx} className="skeleton-shape"></div>
+  ));
+  return <div className="skeleton-loader">{skeletons}</div>;
 };
