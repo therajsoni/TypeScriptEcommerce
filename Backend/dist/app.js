@@ -6,17 +6,17 @@ import { errorMiddleware } from "./middlewares/error.js";
 import ProductRoute from "./routes/Products.js";
 import NodeCache from "node-cache";
 import orderRoute from "./routes/order.js";
+import dotenv from "dotenv";
 import morgan from "morgan";
 import CouponRoute from "./routes/payment.js";
 import dashBoardRoute from "./routes/stats.js";
 import cors from "cors";
-// dotenv.config({
-//   path: "./.env",
-// });
-const port = process.env.PORT || 3000;
-const mongoURI = process.env.MONGO_URI || "mongodb://localhost:27017/";
-const stripe_key = process.env.STRIPE_KEY ||
-    "sk_test_51Q6WJKP24Z3LRKVeJz8PabQKEdWkxYcfHfIIu3S5B3W8x7dU7YfHkQ3IAqWVoT1vtDicWlIBmT2pQ34uLkKu4ns400n60WFDpr";
+dotenv.config({
+    path: "./.env",
+});
+const port = 3000;
+const mongoURI = process.env.MONGO_URI;
+const stripe_key = process.env.STRIPE_KEY;
 // connected to db
 ConnectedDB(mongoURI);
 const app = express();

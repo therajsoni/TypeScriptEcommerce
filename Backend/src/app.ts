@@ -12,16 +12,13 @@ import CouponRoute from "./routes/payment.js";
 import dashBoardRoute from "./routes/stats.js";
 import cors from "cors";
 
-// dotenv.config({
-//   path: "./.env",
-// });
+dotenv.config({
+  path: "./.env",
+});
 
-const port = process.env.PORT || 3000;
-const mongoURI =
-  (process.env.MONGO_URI as string) || "mongodb://localhost:27017/";
-const stripe_key =
-  process.env.STRIPE_KEY ||
-  "sk_test_51Q6WJKP24Z3LRKVeJz8PabQKEdWkxYcfHfIIu3S5B3W8x7dU7YfHkQ3IAqWVoT1vtDicWlIBmT2pQ34uLkKu4ns400n60WFDpr";
+const port = 3000;
+const mongoURI = process.env.MONGO_URI as string;
+const stripe_key = process.env.STRIPE_KEY;
 
 // connected to db
 ConnectedDB(mongoURI);
@@ -35,7 +32,7 @@ app.use(
     methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
   })
 );
-export const stripe = new Stripe(stripe_key);
+export const stripe = new Stripe(stripe_key!);
 export const myCache = new NodeCache();
 
 // Using Routes

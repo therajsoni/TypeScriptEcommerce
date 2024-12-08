@@ -99,7 +99,7 @@ function Shipping() {
         <input
           type="number"
           placeholder="PinCode"
-          name="pincode"
+          name="pinCode"
           onChange={changeHandler}
           value={shippingInfo.pinCode}
         />
