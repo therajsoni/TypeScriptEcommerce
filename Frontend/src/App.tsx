@@ -18,6 +18,8 @@ const Shipping = lazy(() => import("./pages/Shipping"));
 const Login = lazy(() => import("./pages/Login"));
 const Orders = lazy(() => import("./pages/Orders"));
 const OrdersDeatils = lazy(() => import("./pages/OrderDatails"));
+const NotFound = lazy(() => import("./pages/not-found"));
+const Checkout = lazy(() => import("./pages/check-out"));
 
 // AdminDashboard Routes
 const Dashboard = lazy(() => import("./pages/admin/dashboard"));
@@ -83,6 +85,7 @@ const App = () => {
             <Route path="/orders/:id" element={<OrdersDeatils />} />
             {/* need to login */}
             <Route path="/shipping" element={<Shipping />} />
+            <Route path="/pay" element={<Checkout />} />
           </Route>
 
           {/* Route Admin Dashboard  */}
@@ -119,6 +122,7 @@ const App = () => {
               element={<TransactionManagement />}
             />
           </Route>
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
       <Toaster position="bottom-center" />

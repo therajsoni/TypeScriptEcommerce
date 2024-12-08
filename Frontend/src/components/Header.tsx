@@ -12,11 +12,6 @@ import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import toast from "react-hot-toast";
 
-const user = {
-  _id: "",
-  role: "",
-};
-
 interface PropsType {
   user: User | null;
 }
@@ -32,6 +27,7 @@ export default function Header({ user }: PropsType) {
       toast.error("Sign Out Failed");
     }
   };
+  console.log(user);
 
   return (
     <nav className="header">
@@ -46,7 +42,7 @@ export default function Header({ user }: PropsType) {
       </Link>
       {user?._id ? (
         <>
-          <button onClick={(prev) => setIsOpen(!prev)}>
+          <button onClick={() => setIsOpen((prev) => !prev)}>
             <FaUser />
           </button>
           <dialog open={isOpen}>

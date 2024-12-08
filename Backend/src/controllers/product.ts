@@ -142,7 +142,7 @@ export const newProduct = TryCatch(
 );
 
 export const updateProduct = TryCatch(async (req, res, next) => {
-  const id = req.params;
+  const id = req.params.id;
   const { name, price, stock, category } = req.body;
   const photo = req.file;
   const product = await Product.findById(id);
@@ -152,7 +152,7 @@ export const updateProduct = TryCatch(async (req, res, next) => {
       console.log("old Photo Deleted");
     });
     product.photo = photo.path;
-    return next(new ErrorHandler("Missing some field", 400));
+    // return next(new ErrorHandler("Missing some field", 400));
   }
 
   if (name) product.name = name;

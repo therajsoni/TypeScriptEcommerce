@@ -1,35 +1,87 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { VscError } from "react-icons/vsc";
-import CartItem from "../components/CartItem";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-
-const cartItem = [
-  {
-    productId: "a",
-    photo:
-      "https://m.media-amazon.com/images/I/71MUhny6I0L._AC_UF894,1000_QL80_FMwebp_.jpg",
-    name: "MacBook",
-    price: 30000,
-    stock: 64,
-    quantity: 45,
-  },
-];
-const subtotal = 4000;
-const tax = Math.round(subtotal * 0.18);
-const shippingCharges = 200;
-const total = subtotal + tax + shippingCharges;
-const discount = 0;
+import CartItemCard from "../components/CartItem";
+import { cartReducerInitialState } from "../types/reduce-types";
+import { CartItem } from "../types/types";
+import axios from "axios";
+import {
+  addToCart,
+  calculatePrice,
+  discountApplied,
+  removeCartItem,
+} from "./../redux/reducer/cartReducer";
+import { server } from "../redux/store";
 
 function Cart() {
+  const { cartItems, subtotal, tax, total, shippingCharges, discount } =
+    useSelector(
+      (state: { cartReducer: cartReducerInitialState }) => state.cartReducer
+    );
+  const dispatch = useDispatch();
+
   const [couponCode, setCouponCode] = useState<string>("");
   const [isValidCouponCode, setIsValidCouponCode] = useState<boolean>(false);
+
+  const incrementHandler = (cartItem: CartItem) => {
+    if (cartItem.quantity >= cartItem.stock) {
+      toast(
+        `${cartItem.name} is  ${cartItem.quantity} quantity is avaliable now!`,
+        {
+          icon: "🌻",
+        }
+      );
+      return;
+    }
+    dispatch(addToCart({ ...cartItem, quantity: cartItem.quantity + 1 }));
+  };
+
+  const decrementHandler = (cartItem: CartItem) => {
+    if (cartItem.quantity <= 1) {
+      toast("NOT DONE");
+      return;
+    }
+    dispatch(addToCart({ ...cartItem, quantity: cartItem.quantity - 1 }));
+  };
+
+  const removeHandler = (productId: string) => {
+    dispatch(removeCartItem(productId));
+  };
+
   useEffect(() => {
+    dispatch(calculatePrice());
+  }, [cartItems]);
+
+  useEffect(() => {
+    const { token: cancelToken, cancel } = axios.CancelToken.source();
     const timeOutId = setTimeout(() => {
+      axios
+        .get(`${server}/api/v1/payment/discount?coupon=${couponCode}`, {
+          cancelToken,
+        })
+        .then((res: { data: { discount: number } }) => {
+          dispatch(discountApplied(res.data.discount));
+          setIsValidCouponCode(true);
+          dispatch(calculatePrice());
+        })
+        .catch(
+          (e: {
+            response: { data: { message: string; discount: number } };
+          }) => {
+            console.log(e.response.data.message);
+            dispatch(discountApplied(0));
+            setIsValidCouponCode(false);
+            dispatch(calculatePrice());
+          }
+        );
       if (Math.random() > 0.5) setIsValidCouponCode(true);
       else setIsValidCouponCode(false);
     }, 1000);
     return () => {
       clearTimeout(timeOutId);
+      cancel();
       setIsValidCouponCode(false);
     };
   }, [couponCode]);
@@ -37,8 +89,16 @@ function Cart() {
   return (
     <div className="cart">
       <main>
-        {cartItem.length > 0 ? (
-          cartItem?.map((i, idx) => <CartItem key={idx} cartItem={i} />)
+        {cartItems.length > 0 ? (
+          cartItems?.map((i, idx) => (
+            <CartItemCard
+              incrementHandler={incrementHandler}
+              decrementHandler={decrementHandler}
+              removeHandler={removeHandler}
+              key={idx}
+              cartItem={i}
+            />
+          ))
         ) : (
           <h1>No Items Added</h1>
         )}
@@ -69,7 +129,7 @@ function Cart() {
               Invalid Coupon <VscError />
             </span>
           ))}
-        {cartItem.length > 0 && <Link to="/shipping">Checkout</Link>}
+        {cartItems.length > 0 && <Link to="/shipping">Checkout</Link>}
       </aside>
     </div>
   );

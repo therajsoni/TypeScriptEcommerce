@@ -84,10 +84,7 @@ export const getDashboardStats = TryCatch(async (req, res, next) => {
         const thisMonthRevenue = thisMonthOrders.reduce((total, order) => total + (order.total || 0), 0);
         const lastMonthRevenue = lastMonthOrders.reduce((total, order) => total + order.total, 0);
         const changePercent = {
-            revenue: {
-                thisMonthRevenue,
-                lastMonthRevenue,
-            },
+            revenue: calculatePercentage(thisMonthRevenue, lastMonthRevenue),
             product: calculatePercentage(thisMonthProducts.length, lastMonthProducts.length),
             user: calculatePercentage(thisMonthUser.length, lastMonthUser.length),
             order: calculatePercentage(thisMonthOrders.length, lastMonthOrders.length),
@@ -129,7 +126,7 @@ export const getDashboardStats = TryCatch(async (req, res, next) => {
             categoryCount,
             changePercent,
             count,
-            charts: {
+            chart: {
                 order: orderMonthyCounts,
                 revenue: orderMonthyRevenue,
             },
@@ -257,7 +254,7 @@ export const getBarCharts = TryCatch(async (req, res, next) => {
         const ordersCounts = getChartsData({ length: 6, today, docArr: orders });
         charts = {
             users: usersCounts,
-            product: productCounts,
+            products: productCounts,
             orders: ordersCounts,
         };
         myCache.set(key, JSON.stringify(charts));

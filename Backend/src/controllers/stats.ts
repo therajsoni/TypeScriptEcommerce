@@ -115,10 +115,7 @@ export const getDashboardStats = TryCatch(async (req, res, next) => {
       0
     );
     const changePercent = {
-      revenue: {
-        thisMonthRevenue,
-        lastMonthRevenue,
-      },
+      revenue: calculatePercentage(thisMonthRevenue, lastMonthRevenue),
       product: calculatePercentage(
         thisMonthProducts.length,
         lastMonthProducts.length
@@ -171,7 +168,7 @@ export const getDashboardStats = TryCatch(async (req, res, next) => {
       categoryCount,
       changePercent,
       count,
-      charts: {
+      chart: {
         order: orderMonthyCounts,
         revenue: orderMonthyRevenue,
       },
@@ -325,7 +322,7 @@ export const getBarCharts = TryCatch(async (req, res, next) => {
 
     charts = {
       users: usersCounts,
-      product: productCounts,
+      products: productCounts,
       orders: ordersCounts,
     };
     myCache.set(key, JSON.stringify(charts));
